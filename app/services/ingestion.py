@@ -703,6 +703,27 @@ def ingest_records(session: Session, source_name: str, records: list[dict]) -> d
     company_cache: dict[str, Company] = {}
     skill_cache: dict[str, Skill] = {}
     seen_source_ids: set[str] = set()
+    incoming_source_ids = sorted(
+        {
+            str(record.get("source_job_id") or "").strip()
+            for record in records
+            if str(record.get("source_job_id") or "").strip()
+        }
+    )
+    existing_vacancies_by_source_id: dict[str, Vacancy] = {}
+    chunk_size = 500
+    for idx in range(0, len(incoming_source_ids), chunk_size):
+        chunk = incoming_source_ids[idx : idx + chunk_size]
+        existing_chunk = session.execute(
+            select(Vacancy).where(
+                Vacancy.source == source_name,
+                Vacancy.source_job_id.in_(chunk),
+            )
+        ).scalars().all()
+        for vacancy in existing_chunk:
+            existing_vacancies_by_source_id[vacancy.source_job_id] = vacancy
+    processed_since_commit = 0
+    commit_interval = 2000
 
     try:
         for record in records:
@@ -713,12 +734,7 @@ def ingest_records(session: Session, source_name: str, records: list[dict]) -> d
             if source_job_id in seen_source_ids:
                 continue
             seen_source_ids.add(source_job_id)
-            existing_vacancy = session.execute(
-                select(Vacancy).where(
-                    Vacancy.source == source_name,
-                    Vacancy.source_job_id == source_job_id,
-                )
-            ).scalar_one_or_none()
+            existing_vacancy = existing_vacancies_by_source_id.get(source_job_id)
 
             category = _get_or_create_category(
                 session=session,
@@ -746,6 +762,7 @@ def ingest_records(session: Session, source_name: str, records: list[dict]) -> d
                     published=datetime.utcnow(),
                 )
                 session.add(vacancy)
+                existing_vacancies_by_source_id[source_job_id] = vacancy
 
             vacancy.title = str(record.get("title") or "Unknown role")
             vacancy.long_description = record.get("long_description")
@@ -768,6 +785,11 @@ def ingest_records(session: Session, source_name: str, records: list[dict]) -> d
             vacancy.skills = skill_entities
 
             run.records_upserted += 1
+            processed_since_commit += 1
+            if processed_since_commit >= commit_interval:
+                run.message = f"Processed {run.records_upserted} records so far."
+                session.commit()
+                processed_since_commit = 0
 
         run.status = "success"
         run.message = f"Processed {run.records_upserted} records."

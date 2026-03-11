@@ -9,7 +9,13 @@ services:
       - key: DATABASE_URL
         value: sqlite:///./market_analyzer.db
       - key: ENABLE_REMOTE_SOURCES
-        value: "false"
+        value: "true"
+      - key: CSV_FALLBACK_LIMIT
+        value: "25000"
+      - key: HF_LINKEDIN_LIMIT
+        value: "33246"
+      - key: HF_7M_LIMIT
+        value: "80000"
       - key: REFRESH_ON_STARTUP
         value: "true"
       - key: CORS_ORIGINS

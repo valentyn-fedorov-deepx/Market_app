@@ -50,7 +50,9 @@ This repo includes `render.yaml` for deploying backend + frontend directly from 
 4. Open the frontend URL and use it for your presentation.
 
 Demo profile details:
-- Uses CSV fallback on startup for fast first boot (`ENABLE_REMOTE_SOURCES=false`, `REFRESH_ON_STARTUP=true`).
+- Uses remote sources on startup for larger dataset sync (`ENABLE_REMOTE_SOURCES=true`, `REFRESH_ON_STARTUP=true`).
+- First cloud boot may take several minutes while ingestion fills DB and analytics cache.
+- CSV fallback is still applied automatically only if remote sources fail and DB is empty.
 - LLM is enabled in cloud demo через OpenAI-compatible endpoint (`LLM_PROVIDER=openai_compatible`).
 - Before first successful chat response, set secret `LLM_API_KEY` in Render backend service (Environment tab).
 - Default model in `render.yaml`: `mistralai/mistral-7b-instruct:free` via OpenRouter.
