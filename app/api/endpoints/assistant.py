@@ -1,5 +1,7 @@
+import logging
+import uuid
 from typing import Optional
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 import pandas as pd
 from pydantic import BaseModel, Field
 from ...db.session import SessionLocal
@@ -8,6 +10,7 @@ from ...services.assistant import AssistantService
 
 router = APIRouter()
 assistant_service = AssistantService()
+LOGGER = logging.getLogger(__name__)
 
 
 class AssistantChatRequest(BaseModel):
@@ -53,10 +56,23 @@ def chat_with_assistant(payload: AssistantChatRequest, request: Request):
         main_df = pd.DataFrame()
 
     with SessionLocal() as session:
-        return assistant_service.chat(
-            session=session,
-            df=main_df,
-            user_message=payload.message,
-            session_id=payload.session_id,
-            category=payload.category,
-        )
+        try:
+            return assistant_service.chat(
+                session=session,
+                df=main_df,
+                user_message=payload.message,
+                session_id=payload.session_id,
+                category=payload.category,
+            )
+        except Exception as exc:
+            LOGGER.exception("Assistant chat failed: %s", exc)
+            return {
+                "session_id": payload.session_id or str(uuid.uuid4()),
+                "mascot_name": "Vyz",
+                "message": (
+                    "Помічник тимчасово недоступний або дані ще завантажуються. "
+                    "Спробуй ще раз через хвилину."
+                ),
+                "llm_used": False,
+                "saved_to_history": False,
+            }
