@@ -185,8 +185,10 @@ class AssistantService:
         msg = (user_message or "").lower()
         selected_category = None
         selected_skill = None
-
-        categories = [str(cat) for cat in sorted(df["category_name"].dropna().unique().tolist())]
+        if "category_name" in df.columns:
+            categories = [str(cat) for cat in sorted(df["category_name"].dropna().unique().tolist())]
+        else:
+            categories = []
         if category and category in categories:
             selected_category = category
         else:
@@ -219,7 +221,7 @@ class AssistantService:
             if alias in msg:
                 selected_skill = canonical
                 break
-        if selected_skill:
+        if selected_skill and "skills" in scoped.columns:
             scoped = scoped[
                 scoped["skills"].apply(
                     lambda row: any(skill.lower() == selected_skill.lower() for skill in self._row_skills_to_list(row))
@@ -227,14 +229,20 @@ class AssistantService:
             ]
 
         min_exp, max_exp = self._parse_experience_constraints(user_message)
-        if min_exp is not None:
+        if min_exp is not None and "experience" in scoped.columns:
             scoped = scoped[scoped["experience"] >= int(min_exp)]
-        if max_exp is not None:
+        if max_exp is not None and "experience" in scoped.columns:
             scoped = scoped[scoped["experience"] <= int(max_exp)]
 
         return scoped, selected_category, selected_skill, min_exp, max_exp
 
     def _build_data_answer(self, df: pd.DataFrame, user_message: str, category: str | None) -> str:
+        required_cols = {"category_name", "skills", "experience", "avg_salary"}
+        if df is None or df.empty or not required_cols.issubset(set(df.columns)):
+            return (
+                "Дані ще завантажуються в аналітичний кеш. "
+                "Спробуй ще раз через 30-60 секунд — тоді дам точну відповідь з цифрами."
+            )
         scoped, selected_category, selected_skill, min_exp, max_exp = self._infer_scope(df, user_message, category)
         msg = (user_message or "").lower()
         scope_parts = []

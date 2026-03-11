@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     cors_origins: str = Field(
         default="http://localhost:5173,http://127.0.0.1:5173,http://localhost,http://127.0.0.1"
     )
-    cors_allow_origin_regex: str = Field(default=r"https?://(localhost|127\.0\.0\.1)(:\d+)?")
+    cors_allow_origin_regex: str = Field(default=r"https?://(localhost|127\.0\.0\.1|.*\.onrender\.com)(:\d+)?")
 
 
 @lru_cache(maxsize=1)
