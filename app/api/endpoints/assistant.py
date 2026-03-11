@@ -54,9 +54,8 @@ def chat_with_assistant(payload: AssistantChatRequest, request: Request):
     main_df = getattr(request.app.state, "main_df", None)
     if main_df is None:
         main_df = pd.DataFrame()
-
-    with SessionLocal() as session:
-        try:
+    try:
+        with SessionLocal() as session:
             return assistant_service.chat(
                 session=session,
                 df=main_df,
@@ -64,15 +63,15 @@ def chat_with_assistant(payload: AssistantChatRequest, request: Request):
                 session_id=payload.session_id,
                 category=payload.category,
             )
-        except Exception as exc:
-            LOGGER.exception("Assistant chat failed: %s", exc)
-            return {
-                "session_id": payload.session_id or str(uuid.uuid4()),
-                "mascot_name": "Vyz",
-                "message": (
-                    "Помічник тимчасово недоступний або дані ще завантажуються. "
-                    "Спробуй ще раз через хвилину."
-                ),
-                "llm_used": False,
-                "saved_to_history": False,
-            }
+    except Exception as exc:
+        LOGGER.exception("Assistant chat failed: %s", exc)
+        return {
+            "session_id": payload.session_id or str(uuid.uuid4()),
+            "mascot_name": "Vyz",
+            "message": (
+                "Помічник тимчасово недоступний або дані ще завантажуються. "
+                "Спробуй ще раз через хвилину."
+            ),
+            "llm_used": False,
+            "saved_to_history": False,
+        }

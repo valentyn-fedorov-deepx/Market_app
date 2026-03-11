@@ -118,13 +118,17 @@ class AssistantService:
     def _load_recent_history(self, session: Session, session_id: str | None, limit: int = 6) -> list[AssistantConversation]:
         if not session_id:
             return []
-        rows = session.execute(
-            select(AssistantConversation)
-            .where(AssistantConversation.session_id == session_id)
-            .order_by(desc(AssistantConversation.created_at))
-            .limit(limit)
-        ).scalars().all()
-        return list(reversed(rows))
+        try:
+            rows = session.execute(
+                select(AssistantConversation)
+                .where(AssistantConversation.session_id == session_id)
+                .order_by(desc(AssistantConversation.created_at))
+                .limit(limit)
+            ).scalars().all()
+            return list(reversed(rows))
+        except Exception as exc:
+            LOGGER.warning("Unable to load assistant history: %s", exc)
+            return []
 
     def _history_as_text(self, history: list[AssistantConversation]) -> str:
         if not history:
