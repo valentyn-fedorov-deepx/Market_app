@@ -1,0 +1,10 @@
+.env
+*.log
+*.db
+__pycache__/
+*.py[cod]
+*.sqlite
+.venv/
+venv/
+frontend/node_modules/
+frontend/dist/
