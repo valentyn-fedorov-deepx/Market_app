@@ -12,6 +12,7 @@ class Settings(BaseSettings):
 
     database_url: str = Field(default="sqlite:///./market_analyzer.db")
     csv_fallback_path: str = Field(default="data/synthetic_djinni_vacancies_updated.csv")
+    csv_fallback_limit: int = Field(default=8000)
     enable_remote_sources: bool = Field(default=True)
 
     remotive_api_url: str = Field(default="https://remotive.com/api/remote-jobs")

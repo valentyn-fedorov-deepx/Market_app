@@ -262,8 +262,10 @@ def _parse_first_location(value) -> str | None:
     return cleaned or None
 
 
-def _normalize_csv_records(csv_path: str) -> list[dict]:
+def _normalize_csv_records(csv_path: str, limit: int | None = None) -> list[dict]:
     df = pd.read_csv(csv_path)
+    if limit is not None and int(limit) > 0:
+        df = df.head(int(limit))
     records = []
     for row in df.to_dict(orient="records"):
         category_slug, category_name = _parse_category_name(row.get("category"))
@@ -853,7 +855,7 @@ def run_ingestion_pipeline(session: Session, force_csv: bool = False) -> dict:
     should_run_csv_fallback = force_csv or (existing_count == 0 and remote_upserted == 0)
 
     if should_run_csv_fallback:
-        csv_records = _normalize_csv_records(settings.csv_fallback_path)
+        csv_records = _normalize_csv_records(settings.csv_fallback_path, limit=settings.csv_fallback_limit)
         csv_result = ingest_records(session, "csv_fallback", csv_records)
         results.append(csv_result)
 
