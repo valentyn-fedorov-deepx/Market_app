@@ -123,9 +123,6 @@ const Layout = () => {
                     <Button component={NavLink} to="/skills" style={navButtonStyle}>
                         Навички
                     </Button>
-                    <Button component={NavLink} to="/dataset" style={navButtonStyle} end>
-                        Датасет
-                    </Button>
                 </Toolbar>
             </AppBar>
 
