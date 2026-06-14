@@ -5,7 +5,7 @@ import PageContainer from '../components/PageContainer';
 import Chart from '../components/Chart';
 import Filters from '../components/Filters';
 import MetricCard from '../components/MetricCard';
-import { CircularProgress, Alert, Typography, Paper, Grid, Stack } from '@mui/material';
+import { CircularProgress, Alert, Box, Typography, Paper, Grid, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 
 const containerVariants = {
@@ -74,41 +74,53 @@ const SkillsPage = () => {
             {data && (
                 <Grid container spacing={4} component={motion.div} variants={containerVariants} initial="hidden" animate="visible">
                     <Grid item xs={12} md={6} component={motion.div} variants={itemVariants}>
-                        <Paper className="glass-paper" sx={{ p: 2.2, height: 520 }}>
+                        <Paper className="glass-paper" sx={{ p: 2.2, minHeight: 520 }}>
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
                                 Вплив навичок на зарплату
                             </Typography>
-                            <Chart
-                                data={[
-                                    {
-                                        y: topImportance.map((s) => s.skill),
-                                        x: topImportance.map((s) => s.importance),
-                                        type: 'bar',
-                                        orientation: 'h',
-                                        marker: { color: '#90caf9' },
-                                    },
-                                ]}
-                                layout={{ title: 'Feature importance (ML)', yaxis: { autorange: 'reversed' } }}
-                            />
+                            {topImportance.length ? (
+                                <Box sx={{ height: 440 }}>
+                                    <Chart
+                                        data={[
+                                            {
+                                                y: topImportance.map((s) => s.skill),
+                                                x: topImportance.map((s) => s.importance),
+                                                type: 'bar',
+                                                orientation: 'h',
+                                                marker: { color: '#90caf9' },
+                                            },
+                                        ]}
+                                        layout={{ title: 'Feature importance (ML)', yaxis: { autorange: 'reversed' }, autosize: true }}
+                                    />
+                                </Box>
+                            ) : (
+                                <Alert severity="info">Замало salary-даних для ML-аналізу важливості навичок у цьому зрізі. Увімкни Adzuna/LinkedIn (джерела із зарплатами).</Alert>
+                            )}
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={6} component={motion.div} variants={itemVariants}>
-                        <Paper className="glass-paper" sx={{ p: 2.2, height: 520 }}>
+                        <Paper className="glass-paper" sx={{ p: 2.2, minHeight: 520 }}>
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
                                 Топ навичок для Q4 (Top 25% ЗП)
                             </Typography>
-                            <Chart
-                                data={[
-                                    {
-                                        y: q4Skills.map((s) => s.skills || s.skill),
-                                        x: q4Skills.map((s) => s.count),
-                                        type: 'bar',
-                                        orientation: 'h',
-                                        marker: { color: '#e3f2fd' },
-                                    },
-                                ]}
-                                layout={{ title: 'Найчастіші згадки', yaxis: { autorange: 'reversed' } }}
-                            />
+                            {q4Skills.length ? (
+                                <Box sx={{ height: 440 }}>
+                                    <Chart
+                                        data={[
+                                            {
+                                                y: q4Skills.map((s) => s.skills || s.skill),
+                                                x: q4Skills.map((s) => s.count),
+                                                type: 'bar',
+                                                orientation: 'h',
+                                                marker: { color: '#e3f2fd' },
+                                            },
+                                        ]}
+                                        layout={{ title: 'Найчастіші згадки', yaxis: { autorange: 'reversed' }, autosize: true }}
+                                    />
+                                </Box>
+                            ) : (
+                                <Alert severity="info">Немає вакансій у верхньому quartile ЗП для цього зрізу — потрібні salary-дані (Adzuna/LinkedIn).</Alert>
+                            )}
                         </Paper>
                     </Grid>
                 </Grid>

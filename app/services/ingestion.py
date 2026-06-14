@@ -1,4 +1,5 @@
 import ast
+import html
 import re
 from datetime import datetime, timedelta
 import httpx
@@ -41,6 +42,28 @@ def _safe_datetime(value) -> datetime | None:
     if pd.isna(dt):
         return None
     return dt.tz_convert(None).to_pydatetime()
+
+
+SALARY_PERIOD_MULTIPLIERS = {
+    "HOURLY": 2080.0,
+    "WEEKLY": 52.0,
+    "BIWEEKLY": 26.0,
+    "MONTHLY": 12.0,
+    "YEARLY": 1.0,
+    "ANNUAL": 1.0,
+}
+
+
+def _annualize_salary(value: float | None, period) -> float | None:
+    """Normalize a salary to an annual figure so hourly/monthly/yearly are comparable."""
+    if value is None:
+        return None
+    multiplier = SALARY_PERIOD_MULTIPLIERS.get(str(period or "YEARLY").strip().upper(), 1.0)
+    annual = value * multiplier
+    # Guard against mislabeled rows (e.g. an already-annual value tagged HOURLY).
+    if multiplier > 1 and annual > 1_000_000:
+        return value
+    return annual
 
 
 def _extract_salary_range_from_text(salary_text: str | None) -> tuple[float | None, float | None]:
@@ -240,12 +263,19 @@ def _safe_datetime_from_epoch(value) -> datetime | None:
         return None
 
 
+# The HF "7-million-jobs" dataset has no timestamp column, so we place its rows
+# uniformly across a recent 24-month window (deterministic per id). These dates
+# are imputed: they support volume/skills analytics but are excluded from
+# forecasting (see ESTIMATED_DATE_SOURCES in forecaster_advanced).
+SYNTHETIC_DATE_WINDOW_DAYS = 365 * 2
+
+
 def _synthetic_published_from_id(value) -> datetime:
     try:
         seed = abs(int(value))
     except (TypeError, ValueError):
         seed = abs(hash(str(value)))
-    days_back = seed % (365 * 5)
+    days_back = seed % SYNTHETIC_DATE_WINDOW_DAYS
     return datetime.utcnow() - timedelta(days=days_back)
 
 
@@ -302,9 +332,15 @@ def _normalize_csv_records(csv_path: str, limit: int | None = None) -> list[dict
     return records
 
 
+DEFAULT_HTTP_HEADERS = {
+    "User-Agent": "MarketAnalyzer/1.0 (+https://github.com/valentyn-fedorov-deepx/Market_app)",
+    "Accept": "application/json",
+}
+
+
 def _fetch_remotive_records() -> list[dict]:
     settings = get_settings()
-    with httpx.Client(timeout=30) as client:
+    with httpx.Client(timeout=30, headers=DEFAULT_HTTP_HEADERS) as client:
         response = client.get(settings.remotive_api_url)
         response.raise_for_status()
         payload = response.json()
@@ -401,7 +437,7 @@ def _fetch_remoteok_records() -> list[dict]:
     if not settings.remoteok_enabled:
         return []
 
-    with httpx.Client(timeout=30) as client:
+    with httpx.Client(timeout=30, headers=DEFAULT_HTTP_HEADERS) as client:
         response = client.get(settings.remoteok_api_url)
         response.raise_for_status()
         payload = response.json()
@@ -520,6 +556,7 @@ def _fetch_hf_linkedin_records() -> list[dict]:
                 "min_salary",
                 "max_salary",
                 "med_salary",
+                "pay_period",
                 "location",
                 "listed_time",
                 "original_listed_time",
@@ -543,9 +580,10 @@ def _fetch_hf_linkedin_records() -> list[dict]:
         raw_experience = row.get("formatted_experience_level")
         experience_text = f"{title} {raw_experience or ''}"
         category_name = _infer_category(title, skills)
-        salary_min = _safe_float(row.get("min_salary"))
-        salary_max = _safe_float(row.get("max_salary"))
-        salary_med = _safe_float(row.get("med_salary"))
+        pay_period = row.get("pay_period")
+        salary_min = _annualize_salary(_safe_float(row.get("min_salary")), pay_period)
+        salary_max = _annualize_salary(_safe_float(row.get("max_salary")), pay_period)
+        salary_med = _annualize_salary(_safe_float(row.get("med_salary")), pay_period)
         if salary_min is None and salary_med is not None:
             salary_min = salary_med
         if salary_max is None and salary_med is not None:
@@ -585,46 +623,132 @@ def _fetch_adzuna_records() -> list[dict]:
     if not settings.adzuna_enabled or not settings.adzuna_app_id or not settings.adzuna_app_key:
         return []
 
-    endpoint = (
-        f"{settings.adzuna_api_url}/{settings.adzuna_country}/search/1"
-        f"?app_id={settings.adzuna_app_id}&app_key={settings.adzuna_app_key}"
-        f"&results_per_page={settings.adzuna_results_per_page}&what=software"
-    )
-    with httpx.Client(timeout=30) as client:
-        response = client.get(endpoint)
-        response.raise_for_status()
-        payload = response.json()
-
-    jobs = payload.get("results", [])
-    normalized = []
-    for job in jobs:
-        category_name = str((job.get("category") or {}).get("label") or "Software")
-        category_slug = _slugify(category_name)
-        company_name = str((job.get("company") or {}).get("display_name") or "Unknown")
-        salary_min = _safe_float(job.get("salary_min"))
-        salary_max = _safe_float(job.get("salary_max"))
-        normalized.append(
-            {
-                "source": "adzuna",
-                "source_job_id": str(job.get("id")),
-                "title": str(job.get("title") or "Unknown role"),
-                "long_description": job.get("description"),
-                "company_name": company_name,
-                "category_slug": category_slug,
-                "category_name": category_name,
-                "experience": 0,
-                "published": _safe_datetime(job.get("created")) or datetime.utcnow(),
-                "public_salary_min": salary_min,
-                "public_salary_max": salary_max,
-                "avg_salary": (
-                    ((salary_min or 0.0) + (salary_max or 0.0)) / 2
-                    if salary_min is not None and salary_max is not None
-                    else None
-                ),
-                "skills": [],
-                "domain": str(job.get("location", {}).get("display_name") or ""),
+    normalized: list[dict] = []
+    max_pages = max(1, settings.adzuna_max_pages)
+    with httpx.Client(timeout=30, headers=DEFAULT_HTTP_HEADERS) as client:
+        for page in range(1, max_pages + 1):
+            endpoint = f"{settings.adzuna_api_url}/{settings.adzuna_country}/search/{page}"
+            params = {
+                "app_id": settings.adzuna_app_id,
+                "app_key": settings.adzuna_app_key,
+                "results_per_page": settings.adzuna_results_per_page,
             }
+            if settings.adzuna_category:
+                params["category"] = settings.adzuna_category
+            response = client.get(endpoint, params=params)
+            if response.status_code != 200:
+                break
+            jobs = response.json().get("results", []) or []
+            if not jobs:
+                break
+            for job in jobs:
+                category_name = str((job.get("category") or {}).get("label") or "Software")
+                company_name = str((job.get("company") or {}).get("display_name") or "Unknown")
+                title = str(job.get("title") or "Unknown role")
+                description = job.get("description")
+                salary_min = _safe_float(job.get("salary_min"))
+                salary_max = _safe_float(job.get("salary_max"))
+                normalized.append(
+                    {
+                        "source": "adzuna",
+                        "source_job_id": str(job.get("id")),
+                        "title": title,
+                        "long_description": description,
+                        "company_name": company_name,
+                        "category_slug": _slugify(category_name),
+                        "category_name": category_name,
+                        "experience": _infer_experience_years(title, description, []),
+                        "published": _safe_datetime(job.get("created")) or datetime.utcnow(),
+                        "public_salary_min": salary_min,
+                        "public_salary_max": salary_max,
+                        "avg_salary": (
+                            ((salary_min or 0.0) + (salary_max or 0.0)) / 2
+                            if salary_min is not None and salary_max is not None
+                            else None
+                        ),
+                        "skills": _extract_skills_from_text(title, description),
+                        "domain": str((job.get("location") or {}).get("display_name") or ""),
+                    }
+                )
+    return normalized
+
+
+HN_SEARCH_BY_DATE_URL = "https://hn.algolia.com/api/v1/search_by_date"
+HN_ITEM_URL = "https://hn.algolia.com/api/v1/items/{item_id}"
+
+
+def _clean_html_text(value: str | None) -> str:
+    if not value:
+        return ""
+    text = re.sub(r"<[^>]+>", " ", value)
+    text = html.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _parse_hn_post(clean: str) -> tuple[str, str]:
+    """Best-effort company/title from a HN hiring post (often 'Company | Role | …')."""
+    parts = [part.strip() for part in clean.split("|") if part.strip()]
+    if len(parts) >= 2:
+        return (parts[0][:120] or "HN Company", parts[1][:200] or "Role")
+    return ("HN Company", " ".join(clean.split()[:10])[:200] or "Role")
+
+
+def _fetch_hn_hiring_records() -> list[dict]:
+    """Real, key-free historical demand from monthly 'Ask HN: Who is hiring?' threads."""
+    settings = get_settings()
+    if not settings.hn_hiring_enabled or settings.hn_hiring_months <= 0:
+        return []
+
+    normalized: list[dict] = []
+    with httpx.Client(timeout=60, headers=DEFAULT_HTTP_HEADERS) as client:
+        resp = client.get(
+            HN_SEARCH_BY_DATE_URL,
+            params={"query": "Ask HN: Who is hiring?", "tags": "story", "hitsPerPage": 1000},
         )
+        resp.raise_for_status()
+        hits = resp.json().get("hits", []) or []
+
+        # Keep only the canonical monthly threads: "Ask HN: Who is hiring? (Month YYYY)".
+        threads = [hit for hit in hits if "who is hiring? (" in (hit.get("title") or "").lower()]
+        threads.sort(key=lambda hit: hit.get("created_at_i", 0), reverse=True)
+        threads = threads[: settings.hn_hiring_months]
+
+        for thread in threads:
+            thread_id = thread.get("objectID")
+            if not thread_id:
+                continue
+            try:
+                item = client.get(HN_ITEM_URL.format(item_id=thread_id)).json()
+            except Exception:
+                continue
+            for child in (item.get("children") or []):
+                clean = _clean_html_text(child.get("text"))
+                if len(clean) < 30:
+                    continue
+                published = _safe_datetime(child.get("created_at"))
+                if published is None:
+                    continue
+                company, title = _parse_hn_post(clean)
+                skills = _extract_skills_from_text(clean)
+                category_name = _infer_category(title, skills)
+                normalized.append(
+                    {
+                        "source": "hn_hiring",
+                        "source_job_id": str(child.get("id")),
+                        "title": title,
+                        "long_description": clean[:2000],
+                        "company_name": company,
+                        "category_slug": _slugify(category_name),
+                        "category_name": category_name,
+                        "experience": _infer_experience_years(title, clean, skills),
+                        "published": published,
+                        "public_salary_min": None,
+                        "public_salary_max": None,
+                        "avg_salary": None,
+                        "skills": skills,
+                        "domain": "Remote" if "remote" in clean.lower() else None,
+                    }
+                )
     return normalized
 
 
@@ -854,6 +978,15 @@ def run_ingestion_pipeline(session: Session, force_csv: bool = False) -> dict:
                 remote_upserted += remoteok_result["records_upserted"]
         except Exception as exc:
             errors.append(f"remoteok: {exc}")
+
+        try:
+            hn_records = _fetch_hn_hiring_records()
+            if hn_records:
+                hn_result = ingest_records(session, "hn_hiring", hn_records)
+                results.append(hn_result)
+                remote_upserted += hn_result["records_upserted"]
+        except Exception as exc:
+            errors.append(f"hn_hiring: {exc}")
 
         try:
             linkedin_records = _fetch_hf_linkedin_records()

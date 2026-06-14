@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     adzuna_app_key: str | None = Field(default=None)
     adzuna_country: str = Field(default="gb")
     adzuna_results_per_page: int = Field(default=50)
+    adzuna_max_pages: int = Field(default=5)
+    adzuna_category: str = Field(default="it-jobs")
+
+    # Hacker News "Who is hiring?" monthly threads — real, free, no-key source
+    # with dense historical posting volume going back years.
+    hn_hiring_enabled: bool = Field(default=True)
+    hn_hiring_months: int = Field(default=36)
 
     arbeitnow_enabled: bool = Field(default=False)
     arbeitnow_api_url: str = Field(default="https://www.arbeitnow.com/api/job-board-api")

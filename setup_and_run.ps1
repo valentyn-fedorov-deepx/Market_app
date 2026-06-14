@@ -9,6 +9,7 @@ param(
     [switch]$SkipFrontendInstall,
     [switch]$SkipModelPull,
     [switch]$SkipDataSeed,
+    [switch]$SkipOllama,
     [switch]$NoCleanRestart
 )
 
@@ -564,7 +565,8 @@ function Seed-DataIfNeeded {
         return
     }
 
-    Write-Step "Database is empty. Seeding data from CSV fallback"
+    Write-Step "Database is empty. Seeding data from live sources (HN / LinkedIn / job APIs)"
+    Write-Host "This downloads real data and may take a few minutes. CSV fallback is used only if all sources fail." -ForegroundColor DarkYellow
     $seedCode = @'
 import json
 from sqlalchemy import select, func
@@ -574,7 +576,7 @@ from app.services.ingestion import run_ingestion_pipeline
 
 init_db()
 with SessionLocal() as session:
-    result = run_ingestion_pipeline(session, force_csv=True)
+    result = run_ingestion_pipeline(session, force_csv=False)
 
 with SessionLocal() as session:
     count = session.execute(select(func.count(Vacancy.id))).scalar_one()
@@ -627,9 +629,24 @@ if (-not $SkipFrontendInstall) {
     Install-FrontendDependencies -ProjectRoot $ProjectRoot
 }
 
-$ollamaExe = Ensure-OllamaInstalledAndReady
-$selectedModel = Ensure-OllamaModel -OllamaExe $ollamaExe -EnvFile $envFile -RequestedModel $OllamaModel -SkipModelPull:$SkipModelPull
-Write-Host "Using Ollama model: $selectedModel" -ForegroundColor Green
+# Ollama powers the AI assistant. It is OPTIONAL: the assistant falls back to
+# deterministic, data-driven answers if Ollama is unavailable. Never let an
+# Ollama hiccup abort the whole setup.
+$selectedModel = ""
+if ($SkipOllama) {
+    Write-Step "Skipping Ollama setup (-SkipOllama). Assistant will use deterministic fallback."
+}
+else {
+    try {
+        $ollamaExe = Ensure-OllamaInstalledAndReady
+        $selectedModel = Ensure-OllamaModel -OllamaExe $ollamaExe -EnvFile $envFile -RequestedModel $OllamaModel -SkipModelPull:$SkipModelPull
+        Write-Host "Using Ollama model: $selectedModel" -ForegroundColor Green
+    }
+    catch {
+        Write-Warning "Ollama setup failed: $($_.Exception.Message)"
+        Write-Warning "Continuing without a local LLM — the assistant will use its deterministic fallback."
+    }
+}
 
 Seed-DataIfNeeded -PythonExe $pythonExe -SkipDataSeed:$SkipDataSeed
 

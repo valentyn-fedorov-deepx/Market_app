@@ -12,6 +12,7 @@ def get_salary_analysis(
         experience_min: Optional[int] = 0,
         forecast_days: int = 365,
         skills: Optional[List[str]] = Query(None),
+        model: Optional[str] = None,
 ):
     """Прогноз попиту та детальний аналіз зарплат для категорії."""
     main_df = request.app.state.main_df
@@ -50,8 +51,9 @@ def get_salary_analysis(
             }
         }
 
+    horizon_months = max(6, min(24, round(forecast_days / 30)))
     advanced_forecaster = MarketForecasterAdvanced(segment_df)
-    demand_forecast = advanced_forecaster.get_prophet_forecast(category, forecast_days)
+    demand_forecast = advanced_forecaster.get_prophet_forecast(category, horizon_months, freq="MS", model=model)
 
     salary_df = segment_df[segment_df["avg_salary"].notna()].copy()
     salary_by_quartile = salary_df[salary_df["salary_quartile"].notna()].groupby('salary_quartile')['avg_salary'].agg(

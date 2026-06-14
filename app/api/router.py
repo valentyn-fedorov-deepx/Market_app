@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from .endpoints import assistant, demand, filters, salary, skills, system
+from .endpoints import assistant, dataset, demand, filters, salary, skills, system
 
 router = APIRouter()
 
 router.include_router(filters.router, prefix="/filters", tags=["Filter Options"])
+router.include_router(dataset.router, prefix="/dataset", tags=["Dataset"])
 router.include_router(demand.router, prefix="/demand", tags=["Demand Analysis"])
 router.include_router(salary.router, prefix="/salary", tags=["Salary Analysis"])
 router.include_router(skills.router, prefix="/skills", tags=["Skills Analysis"])

@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import DemandPage from './pages/DemandPage';
 import SalaryPage from './pages/SalaryPage';
 import SkillsPage from './pages/SkillsPage';
+import DatasetPage from './pages/DatasetPage';
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -14,6 +15,7 @@ const AnimatedRoutes = () => {
                     <Route index element={<DemandPage />} />
                     <Route path="salary" element={<SalaryPage />} />
                     <Route path="skills" element={<SkillsPage />} />
+                    <Route path="dataset" element={<DatasetPage />} />
                 </Route>
             </Routes>
         </AnimatePresence>

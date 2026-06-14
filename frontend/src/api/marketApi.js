@@ -28,6 +28,26 @@ const postData = async (endpoint, payload = {}) => {
     }
 };
 
+const putData = async (endpoint, payload = {}) => {
+    try {
+        const response = await apiClient.put(endpoint, payload);
+        return response.data;
+    } catch (error) {
+        console.error(`Error putting to ${endpoint}:`, error);
+        throw error;
+    }
+};
+
+const deleteData = async (endpoint) => {
+    try {
+        const response = await apiClient.delete(endpoint);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting ${endpoint}:`, error);
+        throw error;
+    }
+};
+
 export const getFilterOptions = (filters) => fetchData('/filters/options', filters);
 export const getDemandData = (filters) => fetchData('/demand/', filters);
 export const getSalaryData = (filters) => fetchData('/salary/', filters);
@@ -40,3 +60,9 @@ export const getAssistantInsights = (category) =>
     fetchData('/assistant/insights', category ? { category } : undefined);
 export const createAssistantReport = (payload) => postData('/assistant/report', payload);
 export const chatWithAssistant = (payload) => postData('/assistant/chat', payload);
+
+export const getDataset = (params) => fetchData('/dataset/', params);
+export const getDatasetSources = () => fetchData('/dataset/sources');
+export const createDatasetRecord = (payload) => postData('/dataset/', payload);
+export const updateDatasetRecord = (id, payload) => putData(`/dataset/${id}`, payload);
+export const deleteDatasetRecord = (id) => deleteData(`/dataset/${id}`);

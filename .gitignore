@@ -1,10 +1,16 @@
 .env
 *.log
 *.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
 __pycache__/
 *.py[cod]
-*.sqlite
 .venv/
 venv/
+.idea/
+dev_preview.*
+test_market.*
 frontend/node_modules/
 frontend/dist/

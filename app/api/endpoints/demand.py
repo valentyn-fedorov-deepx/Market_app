@@ -12,7 +12,8 @@ def get_demand_analysis(
         category: Optional[str] = None,
         experience_min: Optional[int] = None,
         skills: Optional[List[str]] = Query(None),
-        forecast_days: int = 365
+        forecast_days: int = 365,
+        model: Optional[str] = None,
 ):
     """Аналіз попиту з фільтрами та прогнозом попиту."""
     main_df = request.app.state.main_df
@@ -57,10 +58,14 @@ def get_demand_analysis(
     demand_ts = filtered_df.groupby(pd.Grouper(key="published", freq="ME")).size()
     demand_forecast = None
     if category:
+        # Forecast on a monthly grain so yearly seasonality (period=12) is learnable.
+        horizon_months = max(6, min(24, round(forecast_days / 30)))
         advanced_forecaster = MarketForecasterAdvanced(filtered_df)
         demand_forecast = advanced_forecaster.get_prophet_forecast(
             category_name=category,
-            periods=forecast_days
+            periods=horizon_months,
+            freq="MS",
+            model=model,
         )
 
     experience_distribution = (
