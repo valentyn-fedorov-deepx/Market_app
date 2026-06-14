@@ -113,13 +113,18 @@ class MarketForecasterAdvanced:
         # Defensive cap: keep an explosive extrapolation from blowing up the
         # y-axis and flattening the real data range on the chart.
         cap = max(hist_max * 2.5, 10.0)
+        # Show the forecast line/band only for the FUTURE horizon (from the last
+        # actual point onward) so it sits in the correct time frame instead of
+        # being redrawn over historical months.
+        start = max(len(ts_data) - 1, 0)
+        future = forecast.iloc[start:]
         return {
             "model_used": model_name,
             "backtest": {"mae": _finite_or_none(backtest.get("mae")), "mape": _finite_or_none(backtest.get("mape"))},
-            "dates": forecast["ds"].dt.strftime("%Y-%m-%d").tolist(),
-            "predicted_demand": _clean_series(forecast["yhat"]).round(2).clip(lower=0, upper=cap).tolist(),
-            "confidence_upper": _clean_series(forecast["yhat_upper"]).round(2).clip(lower=0, upper=cap).tolist(),
-            "confidence_lower": _clean_series(forecast["yhat_lower"]).round(2).clip(lower=0, upper=cap).tolist(),
+            "dates": future["ds"].dt.strftime("%Y-%m-%d").tolist(),
+            "predicted_demand": _clean_series(future["yhat"]).round(2).clip(lower=0, upper=cap).tolist(),
+            "confidence_upper": _clean_series(future["yhat_upper"]).round(2).clip(lower=0, upper=cap).tolist(),
+            "confidence_lower": _clean_series(future["yhat_lower"]).round(2).clip(lower=0, upper=cap).tolist(),
             "historical_dates": ts_data["ds"].dt.strftime("%Y-%m-%d").tolist(),
             "historical_demand": hist.tolist(),
         }

@@ -179,12 +179,17 @@ const ForecastPanel = ({ forecast, loading, category, model = 'auto', onModelCha
                             </Stack>
                             <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
                                 <Chip size="small" color="primary" label={`Модель: ${forecast.model_used}`} />
+                                {training.backtest?.mape != null ? (
+                                    <Tooltip title="Точність на відкладеній вибірці = 100% − MAPE">
+                                        <Chip size="small" color="success" label={`Точність: ${Math.max(0, 100 - training.backtest.mape).toFixed(1)}%`} />
+                                    </Tooltip>
+                                ) : null}
                                 <Chip size="small" label={`Навчальних точок: ${training.samples}`} />
                                 <Tooltip title="Реальний час підбору параметрів моделі на сервері">
                                     <Chip size="small" label={`Час навчання: ${training.train_time_ms} мс`} />
                                 </Tooltip>
-                                {training.backtest?.mae != null ? <Chip size="small" color="success" label={`MAE (holdout): ${training.backtest.mae}`} /> : null}
-                                {training.backtest?.mape != null ? <Chip size="small" color="success" label={`MAPE: ${training.backtest.mape}%`} /> : null}
+                                {training.backtest?.mae != null ? <Chip size="small" variant="outlined" label={`MAE (holdout): ${training.backtest.mae}`} /> : null}
+                                {training.backtest?.mape != null ? <Chip size="small" variant="outlined" label={`MAPE: ${training.backtest.mape}%`} /> : null}
                                 <DiagnosticChips diagnostics={training.diagnostics} />
                             </Stack>
 

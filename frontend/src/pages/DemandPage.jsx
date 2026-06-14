@@ -32,7 +32,7 @@ const toExperienceBands = (distribution) =>
     })).filter((band) => band.count > 0);
 
 const DemandPage = () => {
-    const [filters, setFilters] = useState({ category: null, experience_min: 0, skills: [], model: 'auto' });
+    const [filters, setFilters] = useState({ category: null, experience_min: 0, skills: [], model: 'prophet' });
     const { data, loading, error, fetchData } = useApiData(getDemandData);
 
     useEffect(() => {

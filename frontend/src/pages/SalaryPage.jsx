@@ -17,7 +17,7 @@ const itemVariants = {
 const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}` : '—');
 
 const SalaryPage = () => {
-    const [filters, setFilters] = useState({ category: null, experience_min: 0, forecast_days: 365, model: 'auto' });
+    const [filters, setFilters] = useState({ category: null, experience_min: 0, forecast_days: 365, model: 'prophet' });
     const { data, loading, error, fetchData } = useApiData(getSalaryData);
 
     useEffect(() => {
