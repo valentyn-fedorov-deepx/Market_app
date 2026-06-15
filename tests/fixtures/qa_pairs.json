@@ -1,0 +1,702 @@
+[
+  {
+    "id": 1,
+    "type": "salary",
+    "category": "Software Development",
+    "question": "Яка медіанна зарплата у Software Development?",
+    "reference_answer": "По зрізу (категорія: Software Development): вакансій 9438, salary-точок 9438. Медіанна зарплата ≈ $2,700, міжквартильний діапазон $1,150–$3,250."
+  },
+  {
+    "id": 2,
+    "type": "skills",
+    "category": "Software Development",
+    "question": "Які топ-навички у Software Development?",
+    "reference_answer": "Топ навички для (категорія: Software Development): Python (2935), React (2759), TypeScript (2634), JavaScript (1793), AWS (1727), PostgreSQL (1638), AI/ML (1355), Go (1266)."
+  },
+  {
+    "id": 3,
+    "type": "category",
+    "category": "Software Development",
+    "question": "Скільки вакансій у категорії Software Development?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Software Development): Software Development (9438)."
+  },
+  {
+    "id": 4,
+    "type": "experience",
+    "category": "Software Development",
+    "question": "Який розподіл досвіду у Software Development?",
+    "reference_answer": "Розбивка досвіду для (категорія: Software Development): Junior=3559, Middle=962, Senior=4526, Lead=391."
+  },
+  {
+    "id": 5,
+    "type": "salary_exp",
+    "category": "Software Development",
+    "question": "Яка зарплата у Software Development для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Software Development, досвід від 5+ років): вакансій 4917, salary-точок 4917. Медіанна зарплата ≈ $3,250, міжквартильний діапазон $2,950–$3,650."
+  },
+  {
+    "id": 6,
+    "type": "salary",
+    "category": "Other",
+    "question": "Яка медіанна зарплата у Other?",
+    "reference_answer": "По зрізу (категорія: Other): вакансій 6715, salary-точок 6715. Медіанна зарплата ≈ $1,400, міжквартильний діапазон $800–$2,250."
+  },
+  {
+    "id": 7,
+    "type": "skills",
+    "category": "Other",
+    "question": "Які топ-навички у Other?",
+    "reference_answer": "Топ навички для (категорія: Other): Go (455), REST (67), Directors (58), Chief Executives (58), SQL (57), AWS (55), PostgreSQL (47), Azure (40)."
+  },
+  {
+    "id": 8,
+    "type": "category",
+    "category": "Other",
+    "question": "Скільки вакансій у категорії Other?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Other): Other (6715)."
+  },
+  {
+    "id": 9,
+    "type": "experience",
+    "category": "Other",
+    "question": "Який розподіл досвіду у Other?",
+    "reference_answer": "Розбивка досвіду для (категорія: Other): Junior=2896, Middle=1130, Senior=2150, Lead=539."
+  },
+  {
+    "id": 10,
+    "type": "salary_exp",
+    "category": "Other",
+    "question": "Яка зарплата у Other для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Other, досвід від 5+ років): вакансій 2689, salary-точок 2689. Медіанна зарплата ≈ $2,350, міжквартильний діапазон $2,150–$2,850."
+  },
+  {
+    "id": 11,
+    "type": "salary",
+    "category": "Data",
+    "question": "Яка медіанна зарплата у Data?",
+    "reference_answer": "По зрізу (категорія: Data): вакансій 1684, salary-точок 1684. Медіанна зарплата ≈ $2,000, міжквартильний діапазон $1,300–$3,600."
+  },
+  {
+    "id": 12,
+    "type": "skills",
+    "category": "Data",
+    "question": "Які топ-навички у Data?",
+    "reference_answer": "Топ навички для (категорія: Data): AI/ML (519), Go (102), SQL (40), Power BI (36), Tableau (22), Finance (22), Remote (16), REST (13)."
+  },
+  {
+    "id": 13,
+    "type": "category",
+    "category": "Data",
+    "question": "Скільки вакансій у категорії Data?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Data): Data (1684)."
+  },
+  {
+    "id": 14,
+    "type": "experience",
+    "category": "Data",
+    "question": "Який розподіл досвіду у Data?",
+    "reference_answer": "Розбивка досвіду для (категорія: Data): Junior=813, Middle=203, Senior=545, Lead=123."
+  },
+  {
+    "id": 15,
+    "type": "salary_exp",
+    "category": "Data",
+    "question": "Яка зарплата у Data для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Data, досвід від 5+ років): вакансій 668, salary-точок 668. Медіанна зарплата ≈ $3,800, міжквартильний діапазон $3,450–$4,562."
+  },
+  {
+    "id": 16,
+    "type": "salary",
+    "category": "Sales",
+    "question": "Яка медіанна зарплата у Sales?",
+    "reference_answer": "По зрізу (категорія: Sales): вакансій 534, salary-точок 534. Медіанна зарплата ≈ $1,600, міжквартильний діапазон $950–$2,450."
+  },
+  {
+    "id": 17,
+    "type": "skills",
+    "category": "Sales",
+    "question": "Які топ-навички у Sales?",
+    "reference_answer": "Топ навички для (категорія: Sales): Go (74), Business Development (12), REST (6), Remote (5), financial services (2), CRM (2), SQL (2), google sheets (1)."
+  },
+  {
+    "id": 18,
+    "type": "category",
+    "category": "Sales",
+    "question": "Скільки вакансій у категорії Sales?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Sales): Sales (534)."
+  },
+  {
+    "id": 19,
+    "type": "experience",
+    "category": "Sales",
+    "question": "Який розподіл досвіду у Sales?",
+    "reference_answer": "Розбивка досвіду для (категорія: Sales): Junior=163, Middle=130, Senior=150, Lead=91."
+  },
+  {
+    "id": 20,
+    "type": "salary_exp",
+    "category": "Sales",
+    "question": "Яка зарплата у Sales для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Sales, досвід від 5+ років): вакансій 241, salary-точок 241. Медіанна зарплата ≈ $2,650, міжквартильний діапазон $2,150–$3,200."
+  },
+  {
+    "id": 21,
+    "type": "salary",
+    "category": "Design",
+    "question": "Яка медіанна зарплата у Design?",
+    "reference_answer": "По зрізу (категорія: Design): вакансій 389, salary-точок 389. Медіанна зарплата ≈ $1,150, міжквартильний діапазон $850–$2,250."
+  },
+  {
+    "id": 22,
+    "type": "skills",
+    "category": "Design",
+    "question": "Які топ-навички у Design?",
+    "reference_answer": "Топ навички для (категорія: Design): customer support (26), exec (25), recruiter (25), digital nomad (23), medical (22), content writing (20), education (20), travel (18)."
+  },
+  {
+    "id": 23,
+    "type": "category",
+    "category": "Design",
+    "question": "Скільки вакансій у категорії Design?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Design): Design (389)."
+  },
+  {
+    "id": 24,
+    "type": "experience",
+    "category": "Design",
+    "question": "Який розподіл досвіду у Design?",
+    "reference_answer": "Розбивка досвіду для (категорія: Design): Junior=215, Middle=66, Senior=90, Lead=18."
+  },
+  {
+    "id": 25,
+    "type": "salary_exp",
+    "category": "Design",
+    "question": "Яка зарплата у Design для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Design, досвід від 5+ років): вакансій 108, salary-точок 108. Медіанна зарплата ≈ $2,600, міжквартильний діапазон $2,350–$3,150."
+  },
+  {
+    "id": 26,
+    "type": "salary",
+    "category": "Finance",
+    "question": "Яка медіанна зарплата у Finance?",
+    "reference_answer": "По зрізу (категорія: Finance): вакансій 346, salary-точок 346. Медіанна зарплата ≈ $1,450, міжквартильний діапазон $800–$2,188."
+  },
+  {
+    "id": 27,
+    "type": "skills",
+    "category": "Finance",
+    "question": "Які топ-навички у Finance?",
+    "reference_answer": "Топ навички для (категорія: Finance): Finance (71), Controlling (9), Go (6), SQL (4), Remote (4), Accounts Receivable (3), Business Analyst (1), Consulting (1)."
+  },
+  {
+    "id": 28,
+    "type": "category",
+    "category": "Finance",
+    "question": "Скільки вакансій у категорії Finance?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Finance): Finance (346)."
+  },
+  {
+    "id": 29,
+    "type": "experience",
+    "category": "Finance",
+    "question": "Який розподіл досвіду у Finance?",
+    "reference_answer": "Розбивка досвіду для (категорія: Finance): Junior=144, Middle=73, Senior=99, Lead=30."
+  },
+  {
+    "id": 30,
+    "type": "salary_exp",
+    "category": "Finance",
+    "question": "Яка зарплата у Finance для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Finance, досвід від 5+ років): вакансій 129, salary-точок 129. Медіанна зарплата ≈ $2,350, міжквартильний діапазон $2,100–$2,750."
+  },
+  {
+    "id": 31,
+    "type": "salary",
+    "category": "Security",
+    "question": "Яка медіанна зарплата у Security?",
+    "reference_answer": "По зрізу (категорія: Security): вакансій 343, salary-точок 343. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,350–$3,025."
+  },
+  {
+    "id": 32,
+    "type": "skills",
+    "category": "Security",
+    "question": "Які топ-навички у Security?",
+    "reference_answer": "Топ навички для (категорія: Security): Go (24), Social Media Manager (10), Azure (8), GCP (8), AWS (8), SQL (5), IT Security (3), Tableau (2)."
+  },
+  {
+    "id": 33,
+    "type": "category",
+    "category": "Security",
+    "question": "Скільки вакансій у категорії Security?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Security): Security (343)."
+  },
+  {
+    "id": 34,
+    "type": "experience",
+    "category": "Security",
+    "question": "Який розподіл досвіду у Security?",
+    "reference_answer": "Розбивка досвіду для (категорія: Security): Junior=175, Middle=88, Senior=49, Lead=31."
+  },
+  {
+    "id": 35,
+    "type": "salary_exp",
+    "category": "Security",
+    "question": "Яка зарплата у Security для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Security, досвід від 5+ років): вакансій 80, salary-точок 80. Медіанна зарплата ≈ $4,400, міжквартильний діапазон $3,550–$6,000."
+  },
+  {
+    "id": 36,
+    "type": "salary",
+    "category": "Marketing",
+    "question": "Яка медіанна зарплата у Marketing?",
+    "reference_answer": "По зрізу (категорія: Marketing): вакансій 302, salary-точок 302. Медіанна зарплата ≈ $750, міжквартильний діапазон $650–$1,888."
+  },
+  {
+    "id": 37,
+    "type": "skills",
+    "category": "Marketing",
+    "question": "Які топ-навички у Marketing?",
+    "reference_answer": "Топ навички для (категорія: Marketing): Marketing and Communication (74), Remote (29), Online Marketing (24), Go (23), Marketing Manager (14), marketing (11), exec (9), customer support (9)."
+  },
+  {
+    "id": 38,
+    "type": "category",
+    "category": "Marketing",
+    "question": "Скільки вакансій у категорії Marketing?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Marketing): Marketing (302)."
+  },
+  {
+    "id": 39,
+    "type": "experience",
+    "category": "Marketing",
+    "question": "Який розподіл досвіду у Marketing?",
+    "reference_answer": "Розбивка досвіду для (категорія: Marketing): Junior=171, Middle=43, Senior=77, Lead=11."
+  },
+  {
+    "id": 40,
+    "type": "salary_exp",
+    "category": "Marketing",
+    "question": "Яка зарплата у Marketing для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Marketing, досвід від 5+ років): вакансій 88, salary-точок 88. Медіанна зарплата ≈ $2,225, міжквартильний діапазон $2,000–$2,500."
+  },
+  {
+    "id": 41,
+    "type": "salary",
+    "category": "Operations",
+    "question": "Яка медіанна зарплата у Operations?",
+    "reference_answer": "По зрізу (категорія: Operations): вакансій 293, salary-точок 293. Медіанна зарплата ≈ $1,150, міжквартильний діапазон $650–$1,650."
+  },
+  {
+    "id": 42,
+    "type": "skills",
+    "category": "Operations",
+    "question": "Які топ-навички у Operations?",
+    "reference_answer": "Топ навички для (категорія: Operations): Go (15), System and Network Administration (13), Administration (11), SQL (10), Azure (8), AWS (4), Tableau (4), Remote (3)."
+  },
+  {
+    "id": 43,
+    "type": "category",
+    "category": "Operations",
+    "question": "Скільки вакансій у категорії Operations?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Operations): Operations (293)."
+  },
+  {
+    "id": 44,
+    "type": "experience",
+    "category": "Operations",
+    "question": "Який розподіл досвіду у Operations?",
+    "reference_answer": "Розбивка досвіду для (категорія: Operations): Junior=121, Middle=84, Senior=68, Lead=20."
+  },
+  {
+    "id": 45,
+    "type": "salary_exp",
+    "category": "Operations",
+    "question": "Яка зарплата у Operations для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Operations, досвід від 5+ років): вакансій 88, salary-точок 88. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,700–$2,400."
+  },
+  {
+    "id": 46,
+    "type": "salary",
+    "category": "DevOps / Sysadmin",
+    "question": "Яка медіанна зарплата у DevOps / Sysadmin?",
+    "reference_answer": "По зрізу (категорія: DevOps / Sysadmin): вакансій 193, salary-точок 193. Медіанна зарплата ≈ $3,450, міжквартильний діапазон $1,300–$4,000."
+  },
+  {
+    "id": 47,
+    "type": "skills",
+    "category": "DevOps / Sysadmin",
+    "question": "Які топ-навички у DevOps / Sysadmin?",
+    "reference_answer": "Топ навички для (категорія: DevOps / Sysadmin): Kubernetes (109), AWS (66), Go (61), Terraform (57), GCP (20), CI/CD (16), AI/ML (15), PostgreSQL (14)."
+  },
+  {
+    "id": 48,
+    "type": "category",
+    "category": "DevOps / Sysadmin",
+    "question": "Скільки вакансій у категорії DevOps / Sysadmin?",
+    "reference_answer": "Топ категорії у зрізі (категорія: DevOps / Sysadmin): DevOps / Sysadmin (193)."
+  },
+  {
+    "id": 49,
+    "type": "experience",
+    "category": "DevOps / Sysadmin",
+    "question": "Який розподіл досвіду у DevOps / Sysadmin?",
+    "reference_answer": "Розбивка досвіду для (категорія: DevOps / Sysadmin): Junior=57, Middle=9, Senior=115, Lead=12."
+  },
+  {
+    "id": 50,
+    "type": "salary_exp",
+    "category": "DevOps / Sysadmin",
+    "question": "Яка зарплата у DevOps / Sysadmin для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: DevOps / Sysadmin, досвід від 5+ років): вакансій 127, salary-точок 127. Медіанна зарплата ≈ $3,800, міжквартильний діапазон $3,450–$4,200."
+  },
+  {
+    "id": 51,
+    "type": "salary",
+    "category": "Support",
+    "question": "Яка медіанна зарплата у Support?",
+    "reference_answer": "По зрізу (категорія: Support): вакансій 163, salary-точок 163. Медіанна зарплата ≈ $750, міжквартильний діапазон $500–$1,250."
+  },
+  {
+    "id": 52,
+    "type": "skills",
+    "category": "Support",
+    "question": "Які топ-навички у Support?",
+    "reference_answer": "Топ навички для (категорія: Support): Go (9), SQL (5), IT (3), Azure (3), Helpdesk (3), Customer Service (2), ops (2), REST (2)."
+  },
+  {
+    "id": 53,
+    "type": "category",
+    "category": "Support",
+    "question": "Скільки вакансій у категорії Support?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Support): Support (163)."
+  },
+  {
+    "id": 54,
+    "type": "experience",
+    "category": "Support",
+    "question": "Який розподіл досвіду у Support?",
+    "reference_answer": "Розбивка досвіду для (категорія: Support): Junior=83, Middle=37, Senior=35, Lead=8."
+  },
+  {
+    "id": 55,
+    "type": "salary_exp",
+    "category": "Support",
+    "question": "Яка зарплата у Support для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Support, досвід від 5+ років): вакансій 43, salary-точок 43. Медіанна зарплата ≈ $1,450, міжквартильний діапазон $1,325–$1,700."
+  },
+  {
+    "id": 56,
+    "type": "salary",
+    "category": "Product",
+    "question": "Яка медіанна зарплата у Product?",
+    "reference_answer": "По зрізу (категорія: Product): вакансій 146, salary-точок 146. Медіанна зарплата ≈ $2,300, міжквартильний діапазон $1,250–$3,350."
+  },
+  {
+    "id": 57,
+    "type": "skills",
+    "category": "Product",
+    "question": "Які топ-навички у Product?",
+    "reference_answer": "Топ навички для (категорія: Product): Development (17), SAP/ERP Consulting (14), Remote (10), Go (10), GCP (3), REST (3), Project Management (2), Product Management (2)."
+  },
+  {
+    "id": 58,
+    "type": "category",
+    "category": "Product",
+    "question": "Скільки вакансій у категорії Product?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Product): Product (146)."
+  },
+  {
+    "id": 59,
+    "type": "experience",
+    "category": "Product",
+    "question": "Який розподіл досвіду у Product?",
+    "reference_answer": "Розбивка досвіду для (категорія: Product): Junior=59, Middle=32, Senior=45, Lead=10."
+  },
+  {
+    "id": 60,
+    "type": "salary_exp",
+    "category": "Product",
+    "question": "Яка зарплата у Product для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Product, досвід від 5+ років): вакансій 55, salary-точок 55. Медіанна зарплата ≈ $3,600, міжквартильний діапазон $3,300–$4,150."
+  },
+  {
+    "id": 61,
+    "type": "salary",
+    "category": "HR",
+    "question": "Яка медіанна зарплата у HR?",
+    "reference_answer": "По зрізу (категорія: HR): вакансій 99, salary-точок 99. Медіанна зарплата ≈ $700, міжквартильний діапазон $600–$1,450."
+  },
+  {
+    "id": 62,
+    "type": "skills",
+    "category": "HR",
+    "question": "Які топ-навички у HR?",
+    "reference_answer": "Топ навички для (категорія: HR): HR (23), digital nomad (4), hr (4), dev (4), Chief Executives (2), education (2), Directors (2), analyst (2)."
+  },
+  {
+    "id": 63,
+    "type": "category",
+    "category": "HR",
+    "question": "Скільки вакансій у категорії HR?",
+    "reference_answer": "Топ категорії у зрізі (категорія: HR): HR (99)."
+  },
+  {
+    "id": 64,
+    "type": "experience",
+    "category": "HR",
+    "question": "Який розподіл досвіду у HR?",
+    "reference_answer": "Розбивка досвіду для (категорія: HR): Junior=61, Middle=11, Senior=20, Lead=7."
+  },
+  {
+    "id": 65,
+    "type": "salary_exp",
+    "category": "HR",
+    "question": "Яка зарплата у HR для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: HR, досвід від 5+ років): вакансій 27, salary-точок 27. Медіанна зарплата ≈ $1,850, міжквартильний діапазон $1,550–$2,525."
+  },
+  {
+    "id": 66,
+    "type": "salary",
+    "category": "Writing",
+    "question": "Яка медіанна зарплата у Writing?",
+    "reference_answer": "По зрізу (категорія: Writing): вакансій 50, salary-точок 50. Медіанна зарплата ≈ $825, міжквартильний діапазон $550–$1,512."
+  },
+  {
+    "id": 67,
+    "type": "skills",
+    "category": "Writing",
+    "question": "Які топ-навички у Writing?",
+    "reference_answer": "Топ навички для (категорія: Writing): REST (3), Social Media Manager (3), Finance (2), Go (2), insurance (1), research (1), accounting (1), data entry (1)."
+  },
+  {
+    "id": 68,
+    "type": "category",
+    "category": "Writing",
+    "question": "Скільки вакансій у категорії Writing?",
+    "reference_answer": "Топ категорії у зрізі (категорія: Writing): Writing (50)."
+  },
+  {
+    "id": 69,
+    "type": "experience",
+    "category": "Writing",
+    "question": "Який розподіл досвіду у Writing?",
+    "reference_answer": "Розбивка досвіду для (категорія: Writing): Junior=25, Middle=10, Senior=13, Lead=2."
+  },
+  {
+    "id": 70,
+    "type": "salary_exp",
+    "category": "Writing",
+    "question": "Яка зарплата у Writing для досвіду 5+ років?",
+    "reference_answer": "По зрізу (категорія: Writing, досвід від 5+ років): вакансій 15, salary-точок 15. Медіанна зарплата ≈ $1,700, міжквартильний діапазон $1,650–$1,825."
+  },
+  {
+    "id": 71,
+    "type": "salary",
+    "category": null,
+    "question": "Яка медіанна зарплата на IT-ринку?",
+    "reference_answer": "По зрізу (весь ринок): вакансій 20695, salary-точок 20695. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,050–$3,000."
+  },
+  {
+    "id": 72,
+    "type": "category",
+    "category": null,
+    "question": "Які топ категорії за кількістю вакансій?",
+    "reference_answer": "Топ категорії у зрізі (весь ринок): Software Development (9438), Other (6715), Data (1684), Sales (534), Design (389), Finance (346), Security (343), Marketing (302)."
+  },
+  {
+    "id": 73,
+    "type": "skills",
+    "category": null,
+    "question": "Які найпопулярніші навички на ринку?",
+    "reference_answer": "Топ навички для (весь ринок): Python (2935), React (2759), TypeScript (2634), Go (2066), AI/ML (1891), AWS (1879), JavaScript (1793), PostgreSQL (1711)."
+  },
+  {
+    "id": 74,
+    "type": "experience",
+    "category": null,
+    "question": "Який розподіл досвіду на ринку?",
+    "reference_answer": "Розбивка досвіду для (весь ринок): Junior=8542, Middle=2878, Senior=7982, Lead=1293."
+  },
+  {
+    "id": 75,
+    "type": "salary",
+    "category": null,
+    "question": "Яка середня зарплата для senior-рівня?",
+    "reference_answer": "По зрізу (досвід 5-7 років): вакансій 7982, salary-точок 7982. Медіанна зарплата ≈ $2,975, міжквартильний діапазон $2,500–$3,400."
+  },
+  {
+    "id": 76,
+    "type": "skills",
+    "category": null,
+    "question": "Які навички найбільше впливають на зарплату?",
+    "reference_answer": "По зрізу (весь ринок): вакансій 20695, salary-точок 20695. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,050–$3,000."
+  },
+  {
+    "id": 77,
+    "type": "salary",
+    "category": null,
+    "question": "Скільки заробляє junior на ринку?",
+    "reference_answer": "Розбивка досвіду для (досвід 0-1 років): Junior=8542, Middle=0, Senior=0, Lead=0."
+  },
+  {
+    "id": 78,
+    "type": "salary",
+    "category": null,
+    "question": "Яка зарплата у middle-розробника?",
+    "reference_answer": "По зрізу (досвід 2-4 років): вакансій 2878, salary-точок 2878. Медіанна зарплата ≈ $1,750, міжквартильний діапазон $1,400–$2,200."
+  },
+  {
+    "id": 79,
+    "type": "category",
+    "category": null,
+    "question": "Яка найбільша категорія вакансій?",
+    "reference_answer": "Топ категорії у зрізі (весь ринок): Software Development (9438), Other (6715), Data (1684), Sales (534), Design (389), Finance (346), Security (343), Marketing (302)."
+  },
+  {
+    "id": 80,
+    "type": "experience",
+    "category": null,
+    "question": "Скільки junior-вакансій на ринку?",
+    "reference_answer": "Розбивка досвіду для (досвід 0-1 років): Junior=8542, Middle=0, Senior=0, Lead=0."
+  },
+  {
+    "id": 81,
+    "type": "skills",
+    "category": null,
+    "question": "Чи популярний Python на ринку?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по all categories:\n- Вакансій у вибірці: 2939\n- Медіанна зарплата: $2750\n- Середній досвід: 3.4 років\n- Розбивка досвіду: Junior 1070, Middle 338, Senior 1428, Lead 103\n- Найсильніший скіл зараз: Python\n- Найшвидший ріст попиту: Software Development\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 82,
+    "type": "skills",
+    "category": null,
+    "question": "Наскільки затребуваний AWS?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по all categories:\n- Вакансій у вибірці: 1879\n- Медіанна зарплата: $3050\n- Середній досвід: 4.0 років\n- Розбивка досвіду: Junior 540, Middle 183, Senior 1061, Lead 95\n- Найсильніший скіл зараз: AWS\n- Найшвидший ріст попиту: Other\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 83,
+    "type": "salary",
+    "category": null,
+    "question": "Який міжквартильний діапазон зарплат?",
+    "reference_answer": "По зрізу (весь ринок): вакансій 20695, salary-точок 20695. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,050–$3,000."
+  },
+  {
+    "id": 84,
+    "type": "category",
+    "category": null,
+    "question": "Скільки всього вакансій у базі?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по all categories:\n- Вакансій у вибірці: 20695\n- Медіанна зарплата: $1900\n- Середній досвід: 3.4 років\n- Розбивка досвіду: Junior 8542, Middle 2878, Senior 7982, Lead 1293\n- Найсильніший скіл зараз: Python\n- Найшвидший ріст попиту: Sales\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 85,
+    "type": "experience",
+    "category": null,
+    "question": "Яка частка senior-вакансій?",
+    "reference_answer": "Розбивка досвіду для (досвід 5-7 років): Junior=0, Middle=0, Senior=7982, Lead=0."
+  },
+  {
+    "id": 86,
+    "type": "salary",
+    "category": null,
+    "question": "Яка зарплата у Data для senior?",
+    "reference_answer": "По зрізу (категорія: Data, досвід 5-7 років): вакансій 545, salary-точок 545. Медіанна зарплата ≈ $3,650, міжквартильний діапазон $3,350–$4,100."
+  },
+  {
+    "id": 87,
+    "type": "skills",
+    "category": null,
+    "question": "Які топ навички у Data?",
+    "reference_answer": "Топ навички для (категорія: Data): AI/ML (519), Go (102), SQL (40), Power BI (36), Tableau (22), Finance (22), Remote (16), REST (13)."
+  },
+  {
+    "id": 88,
+    "type": "salary",
+    "category": null,
+    "question": "Яка медіанна зарплата у DevOps?",
+    "reference_answer": "По зрізу (весь ринок): вакансій 20695, salary-точок 20695. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,050–$3,000."
+  },
+  {
+    "id": 89,
+    "type": "category",
+    "category": null,
+    "question": "Скільки вакансій у Security?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по Security:\n- Вакансій у вибірці: 343\n- Медіанна зарплата: $1900\n- Середній досвід: 2.8 років\n- Розбивка досвіду: Junior 175, Middle 88, Senior 49, Lead 31\n- Найсильніший скіл зараз: Go\n- Найшвидший ріст попиту: Security\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 90,
+    "type": "experience",
+    "category": null,
+    "question": "Який середній досвід на ринку?",
+    "reference_answer": "Розбивка досвіду для (весь ринок): Junior=8542, Middle=2878, Senior=7982, Lead=1293."
+  },
+  {
+    "id": 91,
+    "type": "salary",
+    "category": null,
+    "question": "Яка зарплата у Software Development для junior?",
+    "reference_answer": "По зрізу (категорія: Software Development, досвід 0-1 років): вакансій 3559, salary-точок 3559. Медіанна зарплата ≈ $1,100, міжквартильний діапазон $1,000–$1,150."
+  },
+  {
+    "id": 92,
+    "type": "skills",
+    "category": null,
+    "question": "Які навички у Security?",
+    "reference_answer": "Топ навички для (категорія: Security): Go (24), Social Media Manager (10), Azure (8), GCP (8), AWS (8), SQL (5), IT Security (3), Tableau (2)."
+  },
+  {
+    "id": 93,
+    "type": "experience",
+    "category": null,
+    "question": "Скільки lead-вакансій на ринку?",
+    "reference_answer": "Розбивка досвіду для (досвід від 8+ років): Junior=0, Middle=0, Senior=0, Lead=1293."
+  },
+  {
+    "id": 94,
+    "type": "salary",
+    "category": null,
+    "question": "Яка зарплата у Design?",
+    "reference_answer": "По зрізу (категорія: Design): вакансій 389, salary-точок 389. Медіанна зарплата ≈ $1,150, міжквартильний діапазон $850–$2,250."
+  },
+  {
+    "id": 95,
+    "type": "category",
+    "category": null,
+    "question": "Скільки вакансій у Marketing?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по Marketing:\n- Вакансій у вибірці: 302\n- Медіанна зарплата: $750\n- Середній досвід: 2.5 років\n- Розбивка досвіду: Junior 171, Middle 43, Senior 77, Lead 11\n- Найсильніший скіл зараз: Marketing and Communication\n- Найшвидший ріст попиту: Marketing\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 96,
+    "type": "skills",
+    "category": null,
+    "question": "Чи затребуваний Kubernetes?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по all categories:\n- Вакансій у вибірці: 1084\n- Медіанна зарплата: $3125\n- Середній досвід: 3.7 років\n- Розбивка досвіду: Junior 316, Middle 95, Senior 650, Lead 23\n- Найсильніший скіл зараз: Kubernetes\n- Найшвидший ріст попиту: DevOps / Sysadmin\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 97,
+    "type": "salary",
+    "category": null,
+    "question": "Яка зарплата у Product?",
+    "reference_answer": "По зрізу (категорія: Product): вакансій 146, salary-точок 146. Медіанна зарплата ≈ $2,300, міжквартильний діапазон $1,250–$3,350."
+  },
+  {
+    "id": 98,
+    "type": "experience",
+    "category": null,
+    "question": "Розбивка по рівнях у Software Development?",
+    "reference_answer": "Привіт, я Vyz 👋\nОсь короткий апдейт по Software Development:\n- Вакансій у вибірці: 9438\n- Медіанна зарплата: $2700\n- Середній досвід: 3.5 років\n- Розбивка досвіду: Junior 3559, Middle 962, Senior 4526, Lead 391\n- Найсильніший скіл зараз: Python\n- Найшвидший ріст попиту: Software Development\nЯкщо хочеш — можу згенерувати детальний звіт із діями на 30/60/90 днів."
+  },
+  {
+    "id": 99,
+    "type": "skills",
+    "category": null,
+    "question": "Які навички дають найвищу зарплату?",
+    "reference_answer": "По зрізу (весь ринок): вакансій 20695, salary-точок 20695. Медіанна зарплата ≈ $1,900, міжквартильний діапазон $1,050–$3,000."
+  },
+  {
+    "id": 100,
+    "type": "salary",
+    "category": null,
+    "question": "Яка медіанна зарплата у Sales?",
+    "reference_answer": "По зрізу (категорія: Sales): вакансій 534, salary-точок 534. Медіанна зарплата ≈ $1,600, міжквартильний діапазон $950–$2,450."
+  }
+]

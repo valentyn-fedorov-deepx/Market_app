@@ -1,0 +1,32 @@
+{
+  "questions": 100,
+  "answers_with_numbers": 76,
+  "total_numbers": 152,
+  "grounded_numbers": 143,
+  "grounding_rate": 0.9407894736842105,
+  "fully_grounded_answers": 72,
+  "llm_used_count": 100,
+  "model": "qwen2.5:7b-instruct",
+  "by_type": {
+    "salary": [
+      0.9090909090909091,
+      33
+    ],
+    "skills": [
+      1.0,
+      1
+    ],
+    "category": [
+      1.0,
+      26
+    ],
+    "experience": [
+      0.896551724137931,
+      58
+    ],
+    "salary_exp": [
+      1.0,
+      34
+    ]
+  }
+}
