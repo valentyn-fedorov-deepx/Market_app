@@ -14,7 +14,7 @@ const itemVariants = {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
 };
 
-const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}` : '—');
+const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}/міс` : '—');
 
 const SalaryPage = () => {
     const [filters, setFilters] = useState({ category: null, experience_min: 0, forecast_days: 365, model: 'prophet' });
@@ -90,7 +90,7 @@ const SalaryPage = () => {
                                                         marker: { color: '#90caf9' },
                                                     },
                                                 ]}
-                                                layout={{ title: 'Медіанна зарплата ($)', xaxis: { title: 'Роки досвіду' }, autosize: true }}
+                                                layout={{ title: 'Медіанна зарплата ($/міс)', xaxis: { title: 'Роки досвіду' }, autosize: true }}
                                             />
                                         </Box>
                                     ) : (
@@ -115,7 +115,7 @@ const SalaryPage = () => {
                                                         marker: { color: ['#4f5a84', '#7a85b4', '#90caf9', '#d9eeff'] },
                                                     },
                                                 ]}
-                                                layout={{ title: 'Медіанна зарплата ($)', yaxis: { title: 'Зарплата ($)' }, autosize: true }}
+                                                layout={{ title: 'Медіанна зарплата ($/міс)', yaxis: { title: 'Зарплата ($/міс)' }, autosize: true }}
                                             />
                                         </Box>
                                     ) : (

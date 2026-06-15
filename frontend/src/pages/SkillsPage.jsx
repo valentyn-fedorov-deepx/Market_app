@@ -18,7 +18,7 @@ const itemVariants = {
     visible: { y: 0, opacity: 1 },
 };
 
-const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}` : '—');
+const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}/міс` : '—');
 
 const SkillsPage = () => {
     const [filters, setFilters] = useState({ category: null, experience_min: 0, skills: [] });

@@ -14,7 +14,7 @@ const itemVariants = {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
 };
 
-const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}` : '—');
+const formatCurrency = (value) => (typeof value === 'number' ? `$${Math.round(value).toLocaleString()}/міс` : '—');
 
 const EXPERIENCE_BANDS = [
     { label: 'Junior (0–1)', min: 0, max: 1 },

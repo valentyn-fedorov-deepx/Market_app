@@ -5,31 +5,32 @@ import pandas as pd
 
 QUARTILE_LABELS = ['Q1 (Lowest)', 'Q2', 'Q3', 'Q4 (Top)']
 
-# Baseline annual salary (USD, ~mid-level) per category. Used to impute a realistic
-# salary for vacancies whose source has no salary (e.g. Hacker News), so the salary
-# analytics are populated instead of empty. Imputed values are derived (not real):
-# base × experience factor × skill premium × deterministic ±12% spread keyed by id.
+# Baseline MONTHLY salary (USD, Ukraine IT market, ~mid-level) per category. Used to
+# impute a realistic monthly salary for vacancies whose source has no salary (e.g.
+# Hacker News), so the salary analytics are populated instead of empty. Imputed values
+# are derived (not real): base × experience factor × skill premium × ±12% spread.
+# Junior ends up ~$900-1500/mo, senior ~$3000-4500, lead ~$5000+ (matches UA levels).
 CATEGORY_BASE_SALARY = {
-    'software development': 95000,
-    'data': 115000,
-    'devops / sysadmin': 108000,
-    'security': 118000,
-    'product': 112000,
-    'design': 88000,
-    'marketing': 76000,
-    'sales': 82000,
-    'writing': 66000,
-    'support': 60000,
-    'finance': 92000,
-    'hr': 70000,
-    'operations': 72000,
-    'other': 82000,
+    'software development': 2300,
+    'data': 2700,
+    'devops / sysadmin': 2600,
+    'security': 2800,
+    'product': 2600,
+    'design': 1900,
+    'marketing': 1500,
+    'sales': 1600,
+    'writing': 1200,
+    'support': 1100,
+    'finance': 1700,
+    'hr': 1300,
+    'operations': 1400,
+    'other': 1700,
 }
 _CATEGORY_KEYWORD_SALARY = [
-    ('machine', 122000), ('ml', 122000), (' ai', 122000), ('data', 115000),
-    ('devops', 108000), ('security', 118000), ('cloud', 110000), ('product', 112000),
-    ('python', 102000), ('java', 99000), ('design', 88000), ('market', 76000),
-    ('sales', 82000), ('support', 60000), ('writ', 66000), ('finance', 92000),
+    ('machine', 2900), ('ml', 2900), (' ai', 2900), ('data', 2700),
+    ('devops', 2600), ('security', 2800), ('cloud', 2600), ('product', 2600),
+    ('python', 2400), ('java', 2300), ('design', 1900), ('market', 1500),
+    ('sales', 1600), ('support', 1100), ('writ', 1200), ('finance', 1700),
 ]
 _HOT_SKILLS = {
     'ai/ml', 'kubernetes', 'aws', 'gcp', 'azure', 'go', 'rust', 'terraform',
@@ -44,7 +45,7 @@ def _base_salary_for_category(name) -> float:
     for keyword, value in _CATEGORY_KEYWORD_SALARY:
         if keyword in key:
             return float(value)
-    return 85000.0
+    return 1700.0
 
 
 def _salary_noise_factor(identifier) -> float:
@@ -65,7 +66,8 @@ def _impute_missing_salaries(df: pd.DataFrame) -> pd.DataFrame:
     sub = df.loc[mask]
     base = sub['category_name'].map(_base_salary_for_category).astype(float)
     experience = pd.to_numeric(sub['experience'], errors='coerce').fillna(0).clip(lower=0)
-    exp_factor = (0.7 + experience * 0.11).clip(upper=2.0)
+    # Wider junior->lead spread: ~0.45x at 0 yrs, ~1.6x at senior (7 yrs), ~2.4x cap.
+    exp_factor = (0.45 + experience * 0.16).clip(lower=0.45, upper=2.4)
     skill_premium = sub['skills'].apply(
         lambda skills: min(
             sum(1 for s in (skills or []) if str(s).strip().lower() in _HOT_SKILLS) * 0.04, 0.3
@@ -74,12 +76,13 @@ def _impute_missing_salaries(df: pd.DataFrame) -> pd.DataFrame:
     identifiers = sub['id'] if 'id' in sub.columns else pd.Series(sub.index, index=sub.index)
     noise = identifiers.apply(_salary_noise_factor)
 
+    # Monthly Ukraine salary: base (monthly, mid-level) x experience x skills x +-12%.
     salary = base * exp_factor * (1 + skill_premium) * (1 + noise)
-    salary = (salary / 500).round() * 500
+    salary = (salary / 50).round() * 50
 
     df.loc[mask, 'avg_salary'] = salary
-    df.loc[mask, 'public_salary_min'] = (salary * 0.88 / 500).round() * 500
-    df.loc[mask, 'public_salary_max'] = (salary * 1.12 / 500).round() * 500
+    df.loc[mask, 'public_salary_min'] = (salary * 0.88 / 50).round() * 50
+    df.loc[mask, 'public_salary_max'] = (salary * 1.12 / 50).round() * 50
     return df
 
 

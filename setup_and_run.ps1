@@ -443,6 +443,15 @@ function Ensure-OllamaModel {
         return $effectiveModel
     }
 
+    # Prefer an already-installed instruct model over a multi-GB download - this is
+    # the common reason the assistant ends up on the fallback (the pull never finished).
+    $alreadyInstalled = Select-BestInstalledModel -InstalledModels $installedModels
+    if ($alreadyInstalled) {
+        Write-Warning "Model '$effectiveModel' not installed; using already-installed '$alreadyInstalled' (skipping download)."
+        Set-EnvValue -FilePath $EnvFile -Key "OLLAMA_MODEL" -Value $alreadyInstalled
+        return $alreadyInstalled
+    }
+
     if ($SkipModelPull) {
         $fallback = Select-BestInstalledModel -InstalledModels $installedModels
         if (-not $fallback) {
@@ -644,7 +653,7 @@ else {
     }
     catch {
         Write-Warning "Ollama setup failed: $($_.Exception.Message)"
-        Write-Warning "Continuing without a local LLM — the assistant will use its deterministic fallback."
+        Write-Warning "Continuing without a local LLM - the assistant will use its deterministic fallback."
     }
 }
 
@@ -674,7 +683,12 @@ if (-not $databaseUrl) {
     $databaseUrl = "sqlite:///$($ProjectRoot.Replace('\','/'))/market_analyzer.db"
 }
 
-$backendCommand = "$env:DATABASE_URL='$databaseUrl'; $env:OLLAMA_MODEL='$selectedModel'; & '$pythonExe' -m uvicorn app.main:app --host 0.0.0.0 --port $BackendPort"
+$ollamaModelForRun = $selectedModel
+if (-not $ollamaModelForRun) { $ollamaModelForRun = Get-EnvValue -FilePath $envFile -Key "OLLAMA_MODEL" }
+if (-not $ollamaModelForRun) { $ollamaModelForRun = "qwen2.5:7b-instruct" }
+# Set env vars in the CHILD shell. Single-quoted template keeps $env: literal; -f fills values.
+$backendTemplate = '$env:DATABASE_URL=''{0}''; $env:OLLAMA_MODEL=''{1}''; $env:ASSISTANT_LLM_ENABLED=''true''; $env:LLM_PROVIDER=''ollama''; & ''{2}'' -m uvicorn app.main:app --host 0.0.0.0 --port {3}'
+$backendCommand = $backendTemplate -f $databaseUrl, $ollamaModelForRun, $pythonExe, $BackendPort
 $frontendCommand = "& '$npmExe' run dev -- --host 0.0.0.0 --port $FrontendPort"
 
 Start-Process -FilePath $shellExe -WorkingDirectory $ProjectRoot -ArgumentList "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", $backendCommand | Out-Null
@@ -702,3 +716,10 @@ Write-Step "Done"
 Write-Host "Backend:  http://127.0.0.1:$BackendPort"
 Write-Host "Frontend: http://127.0.0.1:$FrontendPort"
 Write-Host "Rows in memory: $rows"
+if ($selectedModel -and (Test-OllamaReady)) {
+    Write-Host "AI assistant (Vyz): ON via Ollama model '$selectedModel'" -ForegroundColor Green
+}
+else {
+    Write-Host "AI assistant (Vyz): deterministic fallback (Ollama/model unavailable)." -ForegroundColor DarkYellow
+    Write-Host "  To enable LLM replies: install Ollama (https://ollama.com), run 'ollama pull qwen2.5:7b-instruct', then re-run this script." -ForegroundColor DarkYellow
+}
