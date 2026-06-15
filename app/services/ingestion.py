@@ -306,7 +306,9 @@ def _normalize_csv_records(csv_path: str, limit: int | None = None) -> list[dict
         )
         records.append(
             {
-                "source": "csv_fallback",
+                # Preserve the original source if the CSV carries one (so e.g. the
+                # LinkedIn snapshot stays excluded from forecasting); else fallback.
+                "source": str(row.get("source") or "csv_fallback"),
                 "source_job_id": str(row.get("id")),
                 "title": str(row.get("title") or "Unknown role"),
                 "long_description": row.get("long_description"),
@@ -1011,8 +1013,14 @@ def run_ingestion_pipeline(session: Session, force_csv: bool = False) -> dict:
 
     if should_run_csv_fallback:
         csv_records = _normalize_csv_records(settings.csv_fallback_path, limit=settings.csv_fallback_limit)
-        csv_result = ingest_records(session, "csv_fallback", csv_records)
-        results.append(csv_result)
+        # Group by original source so each vacancy keeps its true source (e.g. the
+        # LinkedIn snapshot stays "hf_linkedin_jobs" and is excluded from forecasting),
+        # since ingest_records stamps every row with the source name it is given.
+        records_by_source: dict[str, list[dict]] = {}
+        for record in csv_records:
+            records_by_source.setdefault(str(record.get("source") or "csv_fallback"), []).append(record)
+        for source_name, source_records in records_by_source.items():
+            results.append(ingest_records(session, source_name, source_records))
 
     total_seen = sum(result["records_seen"] for result in results)
     total_upserted = sum(result["records_upserted"] for result in results)

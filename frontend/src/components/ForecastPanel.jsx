@@ -195,11 +195,6 @@ const ForecastPanel = ({ forecast, loading, category, model = 'auto', onModelCha
 
                             {holdout && holdout.dates?.length ? (
                                 <>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-                                        Бектест: модель навчили на ранніх даних і попросили передбачити останні{' '}
-                                        {training.backtest?.test_size} міс., яких вона <b>не бачила</b>. Збіг ліній = модель справді
-                                        вчиться на даних, а не показує фіксовані числа.
-                                    </Typography>
                                     <Box sx={{ height: 300 }}>
                                         <Chart
                                             data={[

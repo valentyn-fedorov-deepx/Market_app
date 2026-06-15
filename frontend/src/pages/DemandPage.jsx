@@ -51,9 +51,6 @@ const DemandPage = () => {
                 <Typography variant="h4" className="aurora-text">
                     Аналіз попиту на IT-ринку
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    Досліджуй тренди вакансій, обирай модель прогнозу та дивись, як вона навчається на реальних даних.
-                </Typography>
             </Stack>
 
             <Filters filters={filters} onFilterChange={handleFilterChange} />

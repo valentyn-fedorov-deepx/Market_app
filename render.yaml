@@ -8,23 +8,14 @@ services:
     envVars:
       - key: DATABASE_URL
         value: sqlite:///./market_analyzer.db
+      # Load the pre-built dataset (data/market_data.csv) instead of fetching live
+      # sources — fast, reproducible cloud boot with no network/OOM risk.
       - key: ENABLE_REMOTE_SOURCES
-        value: "true"
+        value: "false"
+      - key: CSV_FALLBACK_PATH
+        value: data/market_data.csv
       - key: CSV_FALLBACK_LIMIT
         value: "25000"
-      # HN "Who is hiring?" = real, key-free historical demand backbone (dense monthly history)
-      - key: HN_HIRING_ENABLED
-        value: "true"
-      - key: HN_HIRING_MONTHS
-        value: "36"
-      - key: ARBEITNOW_ENABLED
-        value: "true"
-      # LinkedIn is a single-date snapshot (kept for salary/skills, excluded from forecasting); keep it light
-      - key: HF_LINKEDIN_LIMIT
-        value: "8000"
-      # 7M dataset has no timestamps and is excluded from forecasting — disable to keep cloud boot light
-      - key: HF_7M_ENABLED
-        value: "false"
       - key: REFRESH_ON_STARTUP
         value: "true"
       - key: CORS_ORIGINS

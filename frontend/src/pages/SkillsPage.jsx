@@ -43,9 +43,6 @@ const SkillsPage = () => {
                 <Typography variant="h4" className="aurora-text">
                     Аналіз ключових навичок
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    Дивись, які скіли найбільше впливають на зарплату та які патерни мають top-paid вакансії.
-                </Typography>
             </Stack>
 
             <Filters filters={filters} onFilterChange={handleFilterChange} />

@@ -36,9 +36,6 @@ const SalaryPage = () => {
                 <Typography variant="h4" className="aurora-text">
                     Аналітика зарплат і попиту
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    Аналізуй компенсації по досвіду й квартилях та обирай модель прогнозу попиту.
-                </Typography>
             </Stack>
 
             <Filters filters={filters} onFilterChange={handleFilterChange} />
