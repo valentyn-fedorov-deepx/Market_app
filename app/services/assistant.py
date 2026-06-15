@@ -13,6 +13,14 @@ from ..db.models import AssistantConversation, AssistantInsight
 MASCOT_NAME = "Vyz"
 LOGGER = logging.getLogger(__name__)
 
+# All salary figures in the data are USD per month. Make the LLM state this and never
+# render amounts in hryvnia/UAH.
+CURRENCY_NOTE = (
+    "Важливо: усі зарплати/суми у даних — у ДОЛАРАХ США за місяць (USD/міс). "
+    "Завжди пиши суми зі знаком '$' і додавай 'на місяць'. "
+    "Ніколи не використовуй гривні, грн або UAH."
+)
+
 
 def _safe_pct(current: float, baseline: float) -> float:
     if baseline == 0:
@@ -89,8 +97,10 @@ class AssistantService:
 
         return {
             "category": category,
+            "currency": "USD per month",
             "total_vacancies": int(len(scoped)),
             "median_salary": float(salary_df["avg_salary"].median()) if not salary_df.empty else 0.0,
+            "median_salary_currency": "USD/month",
             "avg_experience": float(scoped["experience"].mean()),
             "top_skills": top_skills,
             "fastest_growth_categories": fastest_growth,
@@ -380,6 +390,7 @@ class AssistantService:
             "Підтримуй діалог і враховуй попередні повідомлення.\n"
             "Якщо питання про ринок праці, не вигадуй числа: використовуй лише факти з блоку 'Детермінована відповідь'.\n"
             "Якщо питання загальне або small-talk — відповідай по-людськи, коротко і дружньо.\n"
+            f"{CURRENCY_NOTE}\n"
             f"Питання про ринок: {'так' if market_related else 'ні'}\n\n"
             f"Історія діалогу:\n{history_text}\n\n"
             f"Контекст JSON:\n{json.dumps(snapshot, ensure_ascii=False)}\n\n"
@@ -476,6 +487,7 @@ class AssistantService:
         prompt = (
             "Ти AI-аналітик IT-ринку. На базі JSON дай 5 коротких інсайтів українською мовою. "
             "Кожен інсайт: заголовок + 1-2 речення + практичний крок. "
+            f"{CURRENCY_NOTE} "
             f"JSON:\n{json.dumps(snapshot, ensure_ascii=False)}"
         )
         llm_text = self._call_ollama(prompt)
@@ -520,6 +532,7 @@ class AssistantService:
         prompt = (
             "Ти AI-аналітик IT-ринку. Підготуй структурований короткий markdown-звіт українською: "
             "резюме, ризики, можливості, 5 дій на 30/60/90 днів. "
+            f"{CURRENCY_NOTE} "
             f"Горизонт днів: {horizon_days}. JSON:\n{json.dumps(snapshot, ensure_ascii=False)}"
         )
         llm_text = self._call_ollama(prompt)
